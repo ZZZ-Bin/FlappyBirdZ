@@ -23,4 +23,13 @@ export default class Pie extends Sprite {
       this.width, this.height
     )
   }
+
+  // 铅笔创建方法
+  static createPie (dataStore, child1, child2) {
+    const minTop = window['canvas'].height / 8
+    const maxTop = window['canvas'].height / 2
+    const top = minTop + Math.random() * (maxTop - minTop)
+    dataStore.get('pies').push(new child1(top))
+    dataStore.get('pies').push(new child2(top))
+  }
 }

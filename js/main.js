@@ -3,9 +3,13 @@ import DataStore from './base/DataStore.js'
 import Director from './runtime/Director.js'
 import Background from './runtime/Background.js'
 import Land from './runtime/Land.js'
+import Pie from './runtime/Pie.js'
+import PieUp from './runtime/Pie_Up.js'
+import PieDown from './runtime/Pie_Down.js'
 import Bird from './player/Bird.js'
 import StartButton from './player/StartButton.js'
 import Score from './player/Score.js'
+import audioPlayer from './runtime/audioPlayer.js'
 
 export default class Main {
   constructor () {
@@ -26,13 +30,13 @@ export default class Main {
   // 资源首次加载方法
   onResFirstLoaded (resMap) {
     this.dataStore.resMap = resMap
-
+    audioPlayer('res/audio/bgm.mp3', true, true)
     this.init()
   }
   // 注册事件
   registerEvent () {
     wx.onTouchStart ((e) => {
-      this.director.birdEvent()
+      Bird.birdEvent(this.dataStore)
       if (this.director.isOver() && StartButton.onButton(e, this.dataStore.get('startButton'))) {
         this.init()
       }
@@ -49,7 +53,7 @@ export default class Main {
       .set('birds', Bird)
       .set('startButton', StartButton)
       .set('score', Score)
-    this.director.createPie()
+    Pie.createPie(this.dataStore, PieUp, PieDown)
     this.director.score = 0
     this.registerEvent()
     this.director.run()

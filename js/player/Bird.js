@@ -18,6 +18,15 @@ export default class Bird extends Sprite {
     // 翅膀煽动间隔
     this.flySpeed = 8
   }
+  // 小鸟跳动
+  static birdEvent (dataStore) {
+    // 避免连点
+    if (dataStore.get('birds').downV < -2) {
+      return false
+    } else {
+      dataStore.get('birds').downV = -5
+    }
+  }
 
   draw () {
     super.draw(

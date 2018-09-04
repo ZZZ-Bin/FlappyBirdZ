@@ -3,8 +3,10 @@
 // 控制游戏运行状态 isOver/!isOver
 
 import DataStore from '../base/DataStore.js'
+import Pie from '../runtime/Pie.js'
 import PieUp from '../runtime/Pie_Up.js'
 import PieDown from '../runtime/Pie_Down.js'
+import audioPlayer from './audioPlayer.js'
 
 export default class Director {
   constructor () {
@@ -19,23 +21,6 @@ export default class Director {
       Director.instance = new Director()
     }
     return Director.instance
-  }
-  // 铅笔创建方法
-  createPie () {
-    const minTop = window['canvas'].height / 8
-    const maxTop = window['canvas'].height / 2
-    const top = minTop + Math.random() * (maxTop - minTop)
-    this.dataStore.get('pies').push(new PieUp(top))
-    this.dataStore.get('pies').push(new PieDown(top))
-  }
-  // 点击屏幕 bird 跳起
-  birdEvent () {
-    // 避免连点
-    if (this.dataStore.get('birds').downV < -2) {
-      return false
-    } else {
-      this.dataStore.get('birds').downV = -5
-    }
   }
   // 各种判断条件
   static Conditions (data) {
@@ -83,6 +68,7 @@ export default class Director {
     if (conditionByond && this.isAddScore) {
       this.score++
       this.isAddScore = false
+      audioPlayer('res/audio/through.mp3')
     }
   }
 
@@ -103,7 +89,7 @@ export default class Director {
       if (
         pies[0].x <= (window['canvas'].width - pies[0].width) / 2 &&
         pies.length === 2) {
-        this.createPie()
+        Pie.createPie(this.dataStore, PieUp, PieDown)
       }
       //  根据数组绘制铅笔
       pies.forEach(item => {
@@ -120,6 +106,8 @@ export default class Director {
       let timer = requestAnimationFrame(() => this.run())
       this.dataStore.data.set('timer', timer)
     } else {
+      audioPlayer('res/audio/knock.mp3')
+      wx.vibrateLong()
       this.dataStore.get('startButton').draw();
       cancelAnimationFrame(this.dataStore.get('timer'));
       this.dataStore.destroy();
