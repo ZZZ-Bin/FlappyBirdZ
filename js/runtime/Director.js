@@ -68,7 +68,7 @@ export default class Director {
     if (conditionByond && this.isAddScore) {
       this.score++
       this.isAddScore = false
-      audioPlayer('res/audio/through.mp3')
+      audioPlayer(this.dataStore.get('audios').through)
     }
   }
 
@@ -106,7 +106,8 @@ export default class Director {
       let timer = requestAnimationFrame(() => this.run())
       this.dataStore.data.set('timer', timer)
     } else {
-      audioPlayer('res/audio/knock.mp3')
+      this.dataStore.get('audios').jump = ''
+      audioPlayer(this.dataStore.get('audios').knock)
       wx.vibrateLong()
       this.dataStore.get('startButton').draw();
       cancelAnimationFrame(this.dataStore.get('timer'));

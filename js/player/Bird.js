@@ -1,8 +1,11 @@
 import Sprite from '../base/Sprite.js'
+import DataStore from '../base/DataStore.js'
+import audioPlayer from '../runtime/audioPlayer'
 
 export default class Bird extends Sprite {
   constructor () {
     let img = Sprite.getImage('birds')
+    let dataStore = DataStore.getInstance()
     super(
       img,
       0, 0,
@@ -20,6 +23,7 @@ export default class Bird extends Sprite {
   }
   // 小鸟跳动
   static birdEvent (dataStore) {
+    audioPlayer(dataStore.get('audios').jump)
     // 避免连点
     if (dataStore.get('birds').downV < -2) {
       return false

@@ -3,12 +3,14 @@ import Director from '../runtime/Director.js'
 
 export default class Pie extends Sprite {
   constructor (image, top) {
+    let bg = Sprite.getImage('bg')
     super(
       image,
       0, 0,
       image.width, image.height,
       window['canvas'].width, 0,
       image.width, image.height
+      // window['canvas'].width * image.width / bg.width, window['canvas'].height * image.height / bg.height
     )
     this.top = top
   }

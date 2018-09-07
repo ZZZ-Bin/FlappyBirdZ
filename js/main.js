@@ -37,6 +37,7 @@ export default class Main {
   registerEvent () {
     wx.onTouchStart ((e) => {
       Bird.birdEvent(this.dataStore)
+
       if (this.director.isOver() && StartButton.onButton(e, this.dataStore.get('startButton'))) {
         this.init()
       }
@@ -53,6 +54,7 @@ export default class Main {
       .set('birds', Bird)
       .set('startButton', StartButton)
       .set('score', Score)
+      .set('audios', {bgm: 'res/audio/bgm.mp3', jump: 'res/audio/jump.mp3', knock: 'res/audio/knock.mp3', through: 'res/audio/through.mp3'})
     Pie.createPie(this.dataStore, PieUp, PieDown)
     this.director.score = 0
     this.registerEvent()
